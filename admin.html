@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoM3U TV – Admin Panel</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="./css/admin.css">
+</head>
+<body>
+  <div class="admin-wrapper">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <i class="bi bi-sliders brand-icon"></i>
+        <div>
+          <h3>GoM3U TV</h3>
+          <span class="sub-text">Admin Control</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-menu">
+        <button class="nav-item active" data-tab="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</button>
+        <button class="nav-item" data-tab="playlists"><i class="bi bi-collection-play-fill"></i> Playlists</button>
+        <button class="nav-item" data-tab="channels"><i class="bi bi-tv-fill"></i> Channels</button>
+        <button class="nav-item" data-tab="logos"><i class="bi bi-images"></i> Logo Manager</button>
+        <button class="nav-item" data-tab="categories"><i class="bi bi-tags-fill"></i> Categories</button>
+        <button class="nav-item" data-tab="notices"><i class="bi bi-megaphone-fill"></i> Notices</button>
+        <button class="nav-item" data-tab="ads"><i class="bi bi-badge-ad-fill"></i> Advertisements</button>
+        <button class="nav-item" data-tab="theme"><i class="bi bi-palette-fill"></i> Theme Config</button>
+        <button class="nav-item" data-tab="settings"><i class="bi bi-gear-fill"></i> Settings</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-outline btn-block" onclick="AuthManager.logout()"><i class="bi bi-box-arrow-left"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Action Bar -->
+      <header class="top-header">
+        <div class="search-bar-container">
+          <i class="bi bi-search"></i>
+          <input type="text" id="global-search" placeholder="Search channels, categories, settings...">
+        </div>
+
+        <div class="top-actions">
+          <button class="btn btn-secondary" onclick="BackupModule.exportAll()"><i class="bi bi-download"></i> Backup JSON</button>
+          <button class="btn btn-success" onclick="PublishModule.publishAll()"><i class="bi bi-cloud-upload-fill"></i> Sync & Publish</button>
+        </div>
+      </header>
+
+      <!-- Dynamic Tab Views -->
+      <div id="tab-dashboard" class="tab-content active"></div>
+      <div id="tab-playlists" class="tab-content"></div>
+      <div id="tab-channels" class="tab-content"></div>
+      <div id="tab-logos" class="tab-content"></div>
+      <div id="tab-categories" class="tab-content"></div>
+      <div id="tab-notices" class="tab-content"></div>
+      <div id="tab-ads" class="tab-content"></div>
+      <div id="tab-theme" class="tab-content"></div>
+      <div id="tab-settings" class="tab-content"></div>
+    </main>
+  </div>
+
+  <!-- Toast Notification Root -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Core Scripts -->
+  <script src="./js/utils.js"></script>
+  <script src="./js/auth.js"></script>
+  
+  <!-- Functional Modules -->
+  <script src="./js/modules/dashboard.js"></script>
+  <script src="./js/modules/playlist.js"></script>
+  <script src="./js/modules/channels.js"></script>
+  <script src="./js/modules/logos.js"></script>
+  <script src="./js/modules/categories.js"></script>
+  <script src="./js/modules/notices.js"></script>
+  <script src="./js/modules/ads.js"></script>
+  <script src="./js/modules/theme.js"></script>
+  <script src="./js/modules/settings.js"></script>
+  <script src="./js/modules/backup.js"></script>
+  <script src="./js/modules/publish.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      AuthManager.requireAuth();
+      await AdminStorage.init();
+      
+      // Sidebar Navigation Handler
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          
+          btn.classList.add('active');
+          const tabId = btn.getAttribute('data-tab');
+          const target = document.getElementById(`tab-${tabId}`);
+          if (target) target.classList.add('active');
+        });
+      });
+
+      // Render Initial Modules
+      DashboardModule.render();
+      PlaylistModule.render();
+      ChannelsModule.render();
+      LogosModule.render();
+      CategoriesModule.render();
+      NoticesModule.render();
+      AdsModule.render();
+      ThemeModule.render();
+      SettingsModule.render();
+    });
+  </script>
+</body>
+</html>
