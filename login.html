@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoM3U TV – Admin Panel Login</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="./css/admin.css">
+</head>
+<body class="login-body">
+  <div class="login-card glass">
+    <div class="login-header">
+      <div class="brand-badge"><i class="bi bi-shield-lock-fill"></i></div>
+      <h2>GoM3U TV Admin</h2>
+      <p>Management & JSON Synchronization Suite</p>
+    </div>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label><i class="bi bi-person-fill"></i> Username</label>
+        <input type="text" id="username" class="form-control" placeholder="admin" required autocomplete="username">
+      </div>
+
+      <div class="form-group">
+        <label><i class="bi bi-key-fill"></i> Password</label>
+        <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+
+      <div class="form-options">
+        <label class="checkbox-label">
+          <input type="checkbox" id="remember-me">
+          <span>Remember session</span>
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">
+        Sign In <i class="bi bi-arrow-right-short"></i>
+      </button>
+    </form>
+    
+    <div id="login-alert" class="alert alert-danger" style="display: none; margin-top: 16px;"></div>
+  </div>
+
+  <script src="./js/utils.js"></script>
+  <script src="./js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => AuthManager.initLogin());
+  </script>
+</body>
+</html>
